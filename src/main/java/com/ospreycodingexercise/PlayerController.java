@@ -15,6 +15,7 @@ public class PlayerController {
         Player player = new Player();
         player.setX("2");
         player.setY("2"); 
+        player.setDirection("NORTH");
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(player);
     }
