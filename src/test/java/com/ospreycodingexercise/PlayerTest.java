@@ -56,4 +56,9 @@ public class PlayerTest {
         assertThat(player.getDirection()).isEqualTo("WEST");
     }
     
+    @Test
+    public void PlayerCanBeCreated() {
+        
+    }
+    
 }
