@@ -14,12 +14,12 @@ public class PlayerTest {
     private Player player;
     
     @BeforeEach
-    public void before() throws Exception{
+    public void before() {
         player = new Player();
     }
     
     @AfterEach
-    public void after() throws Exception {
+    public void after() {
         player = null;
     }
     
