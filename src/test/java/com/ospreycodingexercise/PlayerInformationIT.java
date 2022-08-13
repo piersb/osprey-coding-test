@@ -9,7 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PlayerInformation.class)
+@WebMvcTest(PlayerController.class)
 public class PlayerInformationIT 
 {
     
@@ -17,11 +17,16 @@ public class PlayerInformationIT
     private MockMvc mockMVC;
     
     @Test
-    public void getPlayerPositionIT() throws Exception {
+    public void getPlayerLocationIT() throws Exception {
         this.mockMVC.perform(get("/api/board")).andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.position").value("2x2"));
+                .andExpect(jsonPath("$.location").value("2x2"));
     }
-    
-    
+
+    @Test
+    public void getPlayerDirectionIT() throws Exception {
+        this.mockMVC.perform(get("/api/board")).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.direction").value("NORTH"));
+    }
 }
