@@ -33,6 +33,6 @@ public class Player {
     }
     
     public String getDirection() {
-        return "NORTH";
+        return direction;
     }
 }
