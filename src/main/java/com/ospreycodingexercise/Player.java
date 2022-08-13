@@ -11,16 +11,18 @@ public class Player {
     @GeneratedValue
     private Long id;
     
-    private String x;
-    private String y;
+    private int x;
+    private int y;
     
     private String direction;
 
-    public void setX(String x) {
-        this.x = x;
+    public void setX(int x) {
+        if (x <= 10) {
+            this.x = x;
+        }
     }
     
-    public void setY(String y) {
+    public void setY(int y) {
         this.y = y;
     }
 
