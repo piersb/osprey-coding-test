@@ -6,10 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class PlayerTest {
     private Player player;
     
@@ -54,5 +56,4 @@ public class PlayerTest {
         assertThat(player.getDirection()).isEqualTo("WEST");
     }
     
-
 }
