@@ -25,14 +25,18 @@ public class PlayerController {
     @GetMapping("/api/reset")
     public String resetBoard() {
         Random random = new Random();
+        RandomiseSettings(random);
+
+        setAvatar();
+        return "Reset board!";
+    }
+
+    private void RandomiseSettings(Random random) {
         x = random.nextInt(10) + 1;
         y = random.nextInt(10) + 1;
         int directionNumber = random.nextInt(4);
         String[] directionList = {"NORTH", "SOUTH", "EAST", "WEST"};
         direction = directionList[directionNumber];
-
-        setAvatar();
-        return "Reset board!";
     }
 
     private void setAvatar() {
