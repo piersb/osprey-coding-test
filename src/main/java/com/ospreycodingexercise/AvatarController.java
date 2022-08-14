@@ -35,9 +35,12 @@ public class AvatarController {
 
     @PostMapping("/api/board/{direction}")
     public String AcceptMove(@PathVariable String direction) {
-        Avatar avatar = avatarRepository.findTopByOrderByIdDesc();
-        avatar.setDirection(direction);
-        avatarRepository.save(avatar);
+        Avatar currentAvatar = avatarRepository.findTopByOrderByIdDesc();
+        Avatar newAvatar = new Avatar();
+        newAvatar.setX(currentAvatar.getX());
+        newAvatar.setY(currentAvatar.getY());
+        currentAvatar.setDirection(direction);
+        avatarRepository.save(newAvatar);
         return direction;
     }
     

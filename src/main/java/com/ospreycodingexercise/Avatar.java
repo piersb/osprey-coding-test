@@ -1,5 +1,7 @@
 package com.ospreycodingexercise;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,12 +18,23 @@ public class Avatar {
     private Long id;
 
     private Integer x;
+    
     private Integer y;
 
     private String direction;
 
     private static List<String> directionList = new ArrayList<>(Arrays.asList("NORTH", "SOUTH", "EAST", "WEST"));
 
+
+    @JsonIgnore
+    public Integer getX() {
+        return x;
+    }
+
+    @JsonIgnore
+    public Integer getY() {
+        return y;
+    }
 
     public void setX(int x) {
         if (x >= 1 && x <= 10) {
