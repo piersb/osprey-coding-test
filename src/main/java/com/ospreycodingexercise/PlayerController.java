@@ -12,7 +12,10 @@ public class PlayerController {
     
     @Autowired
     private PlayerRepository playerRepository;
-    
+    private int x;
+    private int y;
+    private String direction;
+
     @GetMapping("/api/board")
     @ResponseBody
     public Iterable<Player> getPlayerInformation() {
@@ -22,18 +25,22 @@ public class PlayerController {
     @GetMapping("/api/reset")
     public String resetBoard() {
         Random random = new Random();
-        int x = random.nextInt(10) + 1;
-        int y = random.nextInt(10) + 1;
+        x = random.nextInt(10) + 1;
+        y = random.nextInt(10) + 1;
         int directionNumber = random.nextInt(4);
         String[] directionList = {"NORTH", "SOUTH", "EAST", "WEST"};
-        String direction = directionList[directionNumber];
-        
+        direction = directionList[directionNumber];
+
+        setAvatar();
+        return "Reset board!";
+    }
+
+    private void setAvatar() {
         Player player = new Player();
         player.setX(x);
         player.setY(y);
         player.setDirection(direction);
         playerRepository.save(player);
-        return "Reset board!";
     }
-    
+
 }
