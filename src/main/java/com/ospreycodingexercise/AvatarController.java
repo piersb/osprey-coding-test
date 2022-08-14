@@ -21,7 +21,7 @@ public class AvatarController {
         return avatarRepository.findTopByOrderByIdDesc();
     }
     
-    @GetMapping("/api/reset")
+    @PostMapping("/api/reset")
     public String resetBoard() {
         int x = random.nextInt(10) + 1;
         int y = random.nextInt(10) + 1;

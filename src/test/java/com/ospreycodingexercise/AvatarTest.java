@@ -158,5 +158,5 @@ public class AvatarTest {
         assertThat(testAvatar.getDirection()).isEqualTo("NORTH");
         assertThat(testAvatar.getLocation()).isEqualTo("5x5");
     }
-
+    
 }
