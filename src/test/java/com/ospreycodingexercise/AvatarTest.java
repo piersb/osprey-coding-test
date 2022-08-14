@@ -62,8 +62,8 @@ public class AvatarTest {
     @Test 
     public void AvatarMovesIfDirectionIsTheSame() {
         testAvatar.setDirection("NORTH");
-        assertThat(testAvatar.getDirection() == "NORTH");
-        assertThat(testAvatar.getLocation() == "5x4");
+        assertThat(testAvatar.getDirection()).isEqualTo("NORTH");
+        assertThat(testAvatar.getLocation()).isEqualTo("5x4");
     } 
     
     
