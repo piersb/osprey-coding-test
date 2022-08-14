@@ -1,6 +1,7 @@
 package com.ospreycodingexercise;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
@@ -34,7 +35,8 @@ public class AvatarController {
     }
 
     @PostMapping("/api/board/{direction}")
-    public String AcceptMove(@PathVariable String direction) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Avatar AcceptMove(@PathVariable String direction) {
         
         Avatar currentAvatar = avatarRepository.findTopByOrderByIdDesc();
         
@@ -44,7 +46,7 @@ public class AvatarController {
         newAvatar.setDirection(direction);
         avatarRepository.save(newAvatar);
         
-        return direction;
+        return newAvatar;
     }
     
     public void clearHistory() {

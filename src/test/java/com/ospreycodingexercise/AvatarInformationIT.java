@@ -71,5 +71,12 @@ public class AvatarInformationIT {
     }
     
 
+    @Test 
+    public void ValidMoveShouldReturn201() throws Exception {
+        this.mockMVC.perform(post("/api/board/NORTH"))
+                .andExpect(status().isCreated());
+    }
+    
+    
 
 }
