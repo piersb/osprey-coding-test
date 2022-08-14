@@ -140,6 +140,17 @@ public class AvatarTest {
                 );
     }
     
+    @Test
+    public void NonValidInputShouldResultInNoChange() {
+        testAvatar.setDirection("UP");
+        assertThat(testAvatar.getDirection()).isEqualTo("NORTH");
+        assertThat(testAvatar.getLocation()).isEqualTo("5x5");
+    } 
+    
+    
+    
+    
+    
     
     @Test
     public void AvatarCanBeCreated() {
