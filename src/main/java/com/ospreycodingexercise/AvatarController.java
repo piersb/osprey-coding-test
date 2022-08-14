@@ -12,7 +12,7 @@ public class AvatarController {
     
     @Autowired
     private AvatarRepository avatarRepository;
-
+    
     Random random = new Random();
     
     @GetMapping("/api/board")
@@ -29,8 +29,13 @@ public class AvatarController {
         String[] directionList = {"NORTH", "SOUTH", "EAST", "WEST"};
         String direction = directionList[directionNumber];
 
+        clearHistory();
         setAvatar(x, y, direction);
         return "Reset board!";
+    }
+
+    public void clearHistory() {
+        avatarRepository.deleteAll();
     }
 
     private void setAvatar(int x, int y, String direction) {

@@ -17,16 +17,17 @@ public class AvatarInformationIT
     private MockMvc mockMVC;
     
     @Test
-    public void getPlayerLocationIT() throws Exception {
+    public void getAvatarLocationIT() throws Exception {
         this.mockMVC.perform(get("/api/board")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.location").value("2x2"));
     }
 
     @Test
-    public void getPlayerDirectionIT() throws Exception {
+    public void getAvatarDirectionIT() throws Exception {
         this.mockMVC.perform(get("/api/board")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.direction").value("NORTH"));
     }
+    
 }
