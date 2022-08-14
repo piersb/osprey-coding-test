@@ -12,17 +12,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class PlayerTest {
-    private Player player;
+public class AvatarTest {
+    private Avatar avatar;
     
     @BeforeEach
     public void before() {
-        player = new Player();
+        avatar = new Avatar();
     }
     
     @AfterEach
     public void after() {
-        player = null;
+        avatar = null;
     }
     
     @ParameterizedTest
@@ -30,9 +30,9 @@ public class PlayerTest {
     public void LocationCannotBeSetOutOfBounds(int[] location) {
         int x = location[0];
         int y = location[1];
-        player.setX(x);
-        player.setY(y);
-        assertThat(player.getLocation())
+        avatar.setX(x);
+        avatar.setY(y);
+        assertThat(avatar.getLocation())
                 .as("Setting x: " + x +" y:" + y + " should have been rejected due to exceeding board boundaries")
                 .isNotEqualTo(x + "x" + y);
     }
@@ -50,10 +50,10 @@ public class PlayerTest {
     
     @Test
     public void DirectionCanBeChanged() {
-        player.setDirection("NORTH");
-        assertThat(player.getDirection()).isEqualTo("NORTH");
-        player.setDirection("WEST");
-        assertThat(player.getDirection()).isEqualTo("WEST");
+        avatar.setDirection("NORTH");
+        assertThat(avatar.getDirection()).isEqualTo("NORTH");
+        avatar.setDirection("WEST");
+        assertThat(avatar.getDirection()).isEqualTo("WEST");
     }
     
     @Test
