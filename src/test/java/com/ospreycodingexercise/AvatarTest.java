@@ -5,11 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scripting.ScriptSource;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,16 +14,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @ActiveProfiles("test")
 public class AvatarTest {
-    private Avatar avatar;
+    private Avatar testAvatar;
     
     @BeforeEach
     public void before() {
-        avatar = new Avatar();
+        testAvatar = new Avatar();
+        testAvatar.setX(5);
+        testAvatar.setY(5);
+        testAvatar.setDirection("NORTH");
     }
     
     @AfterEach
     public void after() {
-        avatar = null;
+        testAvatar = null;
     }
     
     @ParameterizedTest
@@ -34,9 +34,9 @@ public class AvatarTest {
     public void LocationCannotBeSetOutOfBounds(int[] location) {
         int x = location[0];
         int y = location[1];
-        avatar.setX(x);
-        avatar.setY(y);
-        assertThat(avatar.getLocation())
+        testAvatar.setX(x);
+        testAvatar.setY(y);
+        assertThat(testAvatar.getLocation())
                 .as("Setting x: " + x +" y:" + y + " should have been rejected due to exceeding board boundaries")
                 .isNotEqualTo(x + "x" + y);
     }
@@ -53,12 +53,19 @@ public class AvatarTest {
     }
     
     @Test
-    public void DirectionCanBeChanged() {
-        avatar.setDirection("NORTH");
-        assertThat(avatar.getDirection()).isEqualTo("NORTH");
-        avatar.setDirection("WEST");
-        assertThat(avatar.getDirection()).isEqualTo("WEST");
+    public void NewDirectionChangesDirectionButDoesNotMove() {
+        testAvatar.setDirection("WEST");
+        assertThat(testAvatar.getDirection()).isEqualTo("WEST");
+        assertThat(testAvatar.getLocation()).isEqualTo("5x5");
     }
+    
+    @Test 
+    public void AvatarMovesIfDirectionIsTheSame() {
+        testAvatar.setDirection("NORTH");
+        assertThat(testAvatar.getDirection() == "NORTH");
+        assertThat(testAvatar.getLocation() == "5x4");
+    } 
+    
     
     @Test
     public void AvatarCanBeCreated() {

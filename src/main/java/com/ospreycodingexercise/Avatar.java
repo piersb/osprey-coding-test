@@ -34,7 +34,9 @@ public class Avatar {
     }
     
     public void setDirection(String direction) {
-        this.direction = direction;
+        if (direction != this.direction) {
+            this.direction = direction;
+        }
     }
     
     public String getDirection() {
