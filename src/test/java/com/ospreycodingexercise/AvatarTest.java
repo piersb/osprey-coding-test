@@ -12,6 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @SpringBootTest
@@ -26,15 +28,16 @@ public class AvatarTest {
         testAvatar.setY(5);
         testAvatar.setDirection("NORTH");
     }
-    
+
     @AfterEach
     public void after() {
         testAvatar = null;
     }
 
     /**
-     * Attempts to set X and Y co-ordinates outside the board bounds. Expected response is that 
+     * Attempts to set X and Y co-ordinates outside the board bounds. Expected response is that
      * no change in location occurs
+     *
      * @param location {x, y}
      */
     @ParameterizedTest
@@ -45,12 +48,13 @@ public class AvatarTest {
         testAvatar.setX(x);
         testAvatar.setY(y);
         assertThat(testAvatar.getLocation())
-                .as("Setting x: " + x +" y:" + y + " should have been rejected due to exceeding board boundaries")
+                .as("Setting x: " + x + " y:" + y + " should have been rejected due to exceeding board boundaries")
                 .isNotEqualTo(x + "x" + y);
     }
 
     /**
      * Parameters for LocationCannotBeSetOutOfBounds.
+     *
      * @return {x, y} where at least one of x and y is out of bounds
      */
     public static int[][] provideOutOfBoundsLocations() {
@@ -78,18 +82,19 @@ public class AvatarTest {
     /**
      * Tests that a setDirection call in the current direction will move the avatar
      * one space in that direction.
-     * @param direction to move
+     *
+     * @param direction      to move
      * @param expectedResult returned
      */
     @ParameterizedTest
     @MethodSource(value = "InputInTheSameDirectionMovesAvatarForward")
     public void AvatarMovesIfDirectionIsTheSame(String direction, String expectedResult) {
-        
+
         // ensure that we're facing in the direction we want to test a move in...
         if (!direction.equals(testAvatar.getDirection())) {
             testAvatar.setDirection(direction);
         }
-        
+
         testAvatar.setDirection(direction);
         assertThat(testAvatar.getDirection()).isEqualTo(direction);
         assertThat(testAvatar.getLocation()).isEqualTo(expectedResult);
@@ -97,6 +102,7 @@ public class AvatarTest {
 
     /**
      * Parameters for AvatarMovesIfDirectionIsTheSame. Assumes standard test Avatar.
+     *
      * @return String direction, String Expected result.
      */
     public static Stream<Arguments> InputInTheSameDirectionMovesAvatarForward() {
@@ -111,8 +117,9 @@ public class AvatarTest {
     /**
      * Tests that if the avatar is at a board edge attempts to move it off the board edge
      * will have no effect
-     * @param x co-ordinate
-     * @param y co-ordinate
+     *
+     * @param x         co-ordinate
+     * @param y         co-ordinate
      * @param direction direction to move
      */
     @ParameterizedTest
@@ -127,8 +134,9 @@ public class AvatarTest {
     }
 
     /**
-     * Parameters for AvatarWillNotMoveOffBoard. Tests by attempting to move off board 
+     * Parameters for AvatarWillNotMoveOffBoard. Tests by attempting to move off board
      * in the North-west and South-east corners.
+     *
      * @return int x, int y, String direction
      */
     public static Stream<Arguments> attemptsToMoveOffBoard() {
@@ -137,25 +145,25 @@ public class AvatarTest {
                 Arguments.of(10, 10, "SOUTH"),
                 Arguments.of(1, 1, "NORTH"),
                 Arguments.of(1, 1, "WEST")
-                );
+        );
     }
-    
+
     @Test
     public void NonValidInputShouldResultInNoChange() {
-        testAvatar.setDirection("UP");
+        
+        Exception exception = assertThrows(IllegalArgumentException.class, 
+                () -> testAvatar.setDirection("UP"));
+
+        assertTrue(exception.getMessage().contains("Invalid input"));
         assertThat(testAvatar.getDirection()).isEqualTo("NORTH");
         assertThat(testAvatar.getLocation()).isEqualTo("5x5");
-    } 
-    
-    
-    
-    
-    
-    
+    }
+
+
     @Test
     public void AvatarCanBeCreated() {
-        
+
     }
-    
+
 
 }

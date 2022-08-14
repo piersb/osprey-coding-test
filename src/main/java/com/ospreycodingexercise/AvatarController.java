@@ -9,6 +9,8 @@ import java.util.Random;
 
 @RestController
 public class AvatarController {
+
+    private static final String[] directionList = new String[]{"NORTH", "SOUTH", "EAST", "WEST"};
     
     @Autowired
     private AvatarRepository avatarRepository;
@@ -26,7 +28,6 @@ public class AvatarController {
         int x = random.nextInt(10) + 1;
         int y = random.nextInt(10) + 1;
         int directionNumber = random.nextInt(4);
-        String[] directionList = {"NORTH", "SOUTH", "EAST", "WEST"};
         String direction = directionList[directionNumber];
 
         clearHistory();

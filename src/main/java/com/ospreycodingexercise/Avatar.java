@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 public class Avatar {
@@ -16,6 +19,9 @@ public class Avatar {
     private Integer y;
 
     private String direction;
+
+    private static List<String> directionList = new ArrayList<>(Arrays.asList("NORTH", "SOUTH", "EAST", "WEST"));
+
 
     public void setX(int x) {
         if (x >= 1 && x <= 10) {
@@ -34,11 +40,17 @@ public class Avatar {
     }
 
     public void setDirection(String direction) {
+        
+        if (!directionList.contains(direction)) {
+           throw new IllegalArgumentException("Invalid input.");
+        }
+
         if (direction.equals(this.direction)) {
             moveAvatar(direction);
         } else {
             this.direction = direction;
         }
+
     }
 
     private void moveAvatar(String direction) {
