@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Objects;
 
 @Entity
 public class Avatar {
@@ -35,7 +34,7 @@ public class Avatar {
     }
     
     public void setDirection(String direction) {
-        if (Objects.equals(direction, this.direction)) {
+        if (direction.equals(this.direction)) {
             moveAvatar(direction);
         } else {
             this.direction = direction;
@@ -43,7 +42,9 @@ public class Avatar {
     }
 
     private void moveAvatar(String direction) {
-        y = 4;
+        if (direction.equals( "NORTH")) {
+            setY(y - 1);
+        }
     }
 
     public String getDirection() {

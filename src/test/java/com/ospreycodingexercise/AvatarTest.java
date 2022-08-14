@@ -4,9 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 public class AvatarTest {
     private Avatar testAvatar;
-    
+
     @BeforeEach
     public void before() {
         testAvatar = new Avatar();
@@ -59,12 +62,43 @@ public class AvatarTest {
         assertThat(testAvatar.getLocation()).isEqualTo("5x5");
     }
     
-    @Test 
-    public void AvatarMovesIfDirectionIsTheSame() {
-        testAvatar.setDirection("NORTH");
-        assertThat(testAvatar.getDirection()).isEqualTo("NORTH");
-        assertThat(testAvatar.getLocation()).isEqualTo("5x4");
-    } 
+    @ParameterizedTest
+    @MethodSource(value = "InputInTheSameDirectionMovesAvatarForward")
+    public void AvatarMovesIfDirectionIsTheSame(String direction, String expectedResult) {
+        testAvatar.setDirection(direction);
+        assertThat(testAvatar.getDirection()).isEqualTo(direction);
+        assertThat(testAvatar.getLocation()).isEqualTo(expectedResult);
+    }
+
+    public static Stream<Arguments> InputInTheSameDirectionMovesAvatarForward() {
+        return Stream.of(
+                Arguments.of("NORTH", "5x4")
+//                ,
+//                Arguments.of("SOUTH", "5x6"),
+//                Arguments.of("EAST", "6x5"),
+//                Arguments.of("WEST", "4x5")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource(value = "attemptsToMoveOffBoard")
+    public void AvatarWillNotMoveOffBoard(int x, int y, String direction) {
+        testAvatar.setX(x);
+        testAvatar.setY(y);
+        testAvatar.setDirection(direction);
+        testAvatar.setDirection(direction);
+        assertThat(testAvatar.getDirection()).isEqualTo(direction);
+        assertThat(testAvatar.getLocation()).isEqualTo(x + "x" + y);
+    }
+
+    public static Stream<Arguments> attemptsToMoveOffBoard() {
+        return Stream.of(
+                Arguments.of(10, 10, "EAST"),
+                Arguments.of(10, 10, "SOUTH"),
+                Arguments.of(1, 1, "NORTH"),
+                Arguments.of(1, 1, "WEST")
+                );
+    }
     
     
     @Test
