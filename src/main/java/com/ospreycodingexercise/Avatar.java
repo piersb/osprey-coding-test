@@ -47,21 +47,26 @@ public class Avatar {
             this.y = y;
         }
     }
+    
+    public void setDirection(String direction) {
+        
+        if (!directionList.contains(direction)) {
+            throw new IllegalArgumentException("Invalid input.");
+        }
+        
+        this.direction = direction;
+    }
 
     public String getLocation() {
         return x + "x" + y;
     }
 
-    public void setDirection(String direction) {
-        
-        if (!directionList.contains(direction)) {
-           throw new IllegalArgumentException("Invalid input.");
-        }
+    public void TryToMove(String direction) {
 
         if (direction.equals(this.direction)) {
             moveAvatar(direction);
         } else {
-            this.direction = direction;
+            setDirection(direction);
         }
 
     }

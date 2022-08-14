@@ -43,9 +43,10 @@ public class AvatarController {
         Avatar newAvatar = new Avatar();
         newAvatar.setX(currentAvatar.getX());
         newAvatar.setY(currentAvatar.getY());
+        newAvatar.TryToMove(currentAvatar.getDirection());
 
         try {
-            newAvatar.setDirection(direction);
+            newAvatar.TryToMove(direction);
         } catch (Exception e) {
             return new ResponseEntity<>(newAvatar, HttpStatus.BAD_REQUEST);
         }
@@ -62,7 +63,7 @@ public class AvatarController {
         Avatar avatar = new Avatar();
         avatar.setX(x);
         avatar.setY(y);
-        avatar.setDirection(direction);
+        avatar.TryToMove(direction);
         avatarRepository.save(avatar);
     }
 

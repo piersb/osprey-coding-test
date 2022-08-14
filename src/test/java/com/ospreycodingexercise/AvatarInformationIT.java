@@ -33,7 +33,7 @@ public class AvatarInformationIT {
         Avatar avatar = new Avatar();
         avatar.setX(5);
         avatar.setY(5);
-        avatar.setDirection("NORTH");
+        avatar.TryToMove("NORTH");
         avatarRepository.save(avatar);
     }
 
@@ -51,7 +51,7 @@ public class AvatarInformationIT {
         Avatar secondAvatar = new Avatar();
         secondAvatar.setX(3);
         secondAvatar.setY(3);
-        secondAvatar.setDirection("SOUTH");
+        secondAvatar.TryToMove("SOUTH");
         avatarRepository.save(secondAvatar);
 
         this.mockMVC.perform(get("/api/board")).andDo(print())
@@ -81,6 +81,14 @@ public class AvatarInformationIT {
     public void InvalidMoveShouldReturn400() throws Exception {
         this.mockMVC.perform(post("/api/board/UP"))
                 .andExpect(status().isBadRequest());
+    }
+    
+    @Test 
+    public void AttemptingToGoNorthFromStartingPointShouldMoveNorth() throws Exception {
+        this.mockMVC.perform(post("/api/board/NORTH"));
+        Avatar newAvatar = avatarRepository.findTopByOrderByIdDesc();
+        assertThat(newAvatar.getLocation()).isEqualTo("5x4");
+        assertThat(newAvatar.getDirection()).isEqualTo("NORTH");
     }
     
 

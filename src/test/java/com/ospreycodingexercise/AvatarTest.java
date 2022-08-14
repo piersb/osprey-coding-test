@@ -21,12 +21,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AvatarTest {
     private Avatar testAvatar;
 
+    /**
+     * Test avatar in the middle of the board facing north.
+     */
     @BeforeEach
     public void before() {
         testAvatar = new Avatar();
         testAvatar.setX(5);
         testAvatar.setY(5);
-        testAvatar.setDirection("NORTH");
+        testAvatar.TryToMove("NORTH");
     }
 
     @AfterEach
@@ -74,13 +77,13 @@ public class AvatarTest {
      */
     @Test
     public void NewDirectionChangesDirectionButDoesNotMove() {
-        testAvatar.setDirection("WEST");
+        testAvatar.TryToMove("WEST");
         assertThat(testAvatar.getDirection()).isEqualTo("WEST");
         assertThat(testAvatar.getLocation()).isEqualTo("5x5");
     }
 
     /**
-     * Tests that a setDirection call in the current direction will move the avatar
+     * Tests that a TryToMove call in the current direction will move the avatar
      * one space in that direction.
      *
      * @param direction      to move
@@ -92,10 +95,10 @@ public class AvatarTest {
 
         // ensure that we're facing in the direction we want to test a move in...
         if (!direction.equals(testAvatar.getDirection())) {
-            testAvatar.setDirection(direction);
+            testAvatar.TryToMove(direction);
         }
 
-        testAvatar.setDirection(direction);
+        testAvatar.TryToMove(direction);
         assertThat(testAvatar.getDirection()).isEqualTo(direction);
         assertThat(testAvatar.getLocation()).isEqualTo(expectedResult);
     }
@@ -128,7 +131,7 @@ public class AvatarTest {
         testAvatar.setX(x);
         testAvatar.setY(y);
         testAvatar.setDirection(direction);
-        testAvatar.setDirection(direction);
+        testAvatar.TryToMove(direction);
         assertThat(testAvatar.getDirection()).isEqualTo(direction);
         assertThat(testAvatar.getLocation()).isEqualTo(x + "x" + y);
     }
@@ -152,7 +155,7 @@ public class AvatarTest {
     public void NonValidInputShouldResultInNoChange() {
         
         Exception exception = assertThrows(IllegalArgumentException.class, 
-                () -> testAvatar.setDirection("UP"));
+                () -> testAvatar.TryToMove("UP"));
 
         assertTrue(exception.getMessage().contains("Invalid input"));
         assertThat(testAvatar.getDirection()).isEqualTo("NORTH");
