@@ -31,7 +31,12 @@ public class AvatarTest {
     public void after() {
         testAvatar = null;
     }
-    
+
+    /**
+     * Attempts to set X and Y co-ordinates outside the board bounds. Expected response is that 
+     * no change in location occurs
+     * @param location {x, y}
+     */
     @ParameterizedTest
     @MethodSource(value = "provideOutOfBoundsLocations")
     public void LocationCannotBeSetOutOfBounds(int[] location) {
@@ -44,6 +49,10 @@ public class AvatarTest {
                 .isNotEqualTo(x + "x" + y);
     }
 
+    /**
+     * Parameters for LocationCannotBeSetOutOfBounds.
+     * @return {x, y} where at least one of x and y is out of bounds
+     */
     public static int[][] provideOutOfBoundsLocations() {
         return new int[][]{
                 {20, 5}, // x high
@@ -54,14 +63,24 @@ public class AvatarTest {
                 {5, -5}, // y negative
         };
     }
-    
+
+    /**
+     * Tests that given a standard test avatar, attempting to set a direction other than North
+     * will change the direction of the avatar and leave it in position.
+     */
     @Test
     public void NewDirectionChangesDirectionButDoesNotMove() {
         testAvatar.setDirection("WEST");
         assertThat(testAvatar.getDirection()).isEqualTo("WEST");
         assertThat(testAvatar.getLocation()).isEqualTo("5x5");
     }
-    
+
+    /**
+     * Tests that a setDirection call in the current direction will move the avatar
+     * one space in that direction.
+     * @param direction to move
+     * @param expectedResult returned
+     */
     @ParameterizedTest
     @MethodSource(value = "InputInTheSameDirectionMovesAvatarForward")
     public void AvatarMovesIfDirectionIsTheSame(String direction, String expectedResult) {
@@ -76,6 +95,10 @@ public class AvatarTest {
         assertThat(testAvatar.getLocation()).isEqualTo(expectedResult);
     }
 
+    /**
+     * Parameters for AvatarMovesIfDirectionIsTheSame. Assumes standard test Avatar.
+     * @return String direction, String Expected result.
+     */
     public static Stream<Arguments> InputInTheSameDirectionMovesAvatarForward() {
         return Stream.of(
                 Arguments.of("NORTH", "5x4"),
@@ -85,6 +108,13 @@ public class AvatarTest {
         );
     }
 
+    /**
+     * Tests that if the avatar is at a board edge attempts to move it off the board edge
+     * will have no effect
+     * @param x co-ordinate
+     * @param y co-ordinate
+     * @param direction direction to move
+     */
     @ParameterizedTest
     @MethodSource(value = "attemptsToMoveOffBoard")
     public void AvatarWillNotMoveOffBoard(int x, int y, String direction) {
@@ -96,6 +126,11 @@ public class AvatarTest {
         assertThat(testAvatar.getLocation()).isEqualTo(x + "x" + y);
     }
 
+    /**
+     * Parameters for AvatarWillNotMoveOffBoard. Tests by attempting to move off board 
+     * in the North-west and South-east corners.
+     * @return int x, int y, String direction
+     */
     public static Stream<Arguments> attemptsToMoveOffBoard() {
         return Stream.of(
                 Arguments.of(10, 10, "EAST"),
