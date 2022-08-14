@@ -65,6 +65,12 @@ public class AvatarTest {
     @ParameterizedTest
     @MethodSource(value = "InputInTheSameDirectionMovesAvatarForward")
     public void AvatarMovesIfDirectionIsTheSame(String direction, String expectedResult) {
+        
+        // ensure that we're facing in the direction we want to test a move in...
+        if (!direction.equals(testAvatar.getDirection())) {
+            testAvatar.setDirection(direction);
+        }
+        
         testAvatar.setDirection(direction);
         assertThat(testAvatar.getDirection()).isEqualTo(direction);
         assertThat(testAvatar.getLocation()).isEqualTo(expectedResult);
@@ -72,11 +78,10 @@ public class AvatarTest {
 
     public static Stream<Arguments> InputInTheSameDirectionMovesAvatarForward() {
         return Stream.of(
-                Arguments.of("NORTH", "5x4")
-//                ,
-//                Arguments.of("SOUTH", "5x6"),
-//                Arguments.of("EAST", "6x5"),
-//                Arguments.of("WEST", "4x5")
+                Arguments.of("NORTH", "5x4"),
+                Arguments.of("SOUTH", "5x6"),
+                Arguments.of("EAST", "6x5"),
+                Arguments.of("WEST", "4x5")
         );
     }
 
