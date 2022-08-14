@@ -1,9 +1,7 @@
 package com.ospreycodingexercise;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 
@@ -35,6 +33,11 @@ public class AvatarController {
         return "Reset board!";
     }
 
+    @PostMapping("/api/board/{direction}")
+    public String AcceptMove(@PathVariable String direction) {
+        return direction;
+    }
+    
     public void clearHistory() {
         avatarRepository.deleteAll();
     }
