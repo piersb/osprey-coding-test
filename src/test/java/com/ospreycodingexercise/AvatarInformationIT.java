@@ -52,8 +52,11 @@ public class AvatarInformationIT {
         avatarRepository.save(secondAvatar);
 
         this.mockMVC.perform(get("/api/board")).andDo(print())
-                .andExpect(status().isOk());
-        
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.location").value("3x3"))
+                .andExpect(jsonPath("$.direction").value("SOUTH"));
+
+
     }
 
 
