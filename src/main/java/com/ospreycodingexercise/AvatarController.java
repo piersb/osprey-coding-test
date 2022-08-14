@@ -17,8 +17,8 @@ public class AvatarController {
     
     @GetMapping("/api/board")
     @ResponseBody
-    public Iterable<Avatar> getAvatarInformation() {
-        return avatarRepository.findAll();
+    public Avatar getAvatarInformation() {
+        return avatarRepository.findTopByOrderByIdDesc();
     }
     
     @GetMapping("/api/reset")
