@@ -8,13 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(properties = {"spring.config.name=myapp-test-h2"})
 @AutoConfigureMockMvc
@@ -76,11 +75,17 @@ public class AvatarInformationIT {
         this.mockMVC.perform(post("/api/board/NORTH"))
                 .andExpect(status().isCreated());
     }
-    
+
     @Test
     public void InvalidMoveShouldReturn400() throws Exception {
         this.mockMVC.perform(post("/api/board/UP"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void ResetShouldReturn200() throws Exception {
+        this.mockMVC.perform(post("/api/reset/"))
+                .andExpect(status().isOk());
     }
     
     @Test 
