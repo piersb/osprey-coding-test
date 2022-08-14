@@ -159,11 +159,4 @@ public class AvatarTest {
         assertThat(testAvatar.getLocation()).isEqualTo("5x5");
     }
 
-
-    @Test
-    public void AvatarCanBeCreated() {
-
-    }
-
-
 }

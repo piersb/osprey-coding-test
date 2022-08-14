@@ -1,33 +1,60 @@
 package com.ospreycodingexercise;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AvatarController.class)
-public class AvatarInformationIT 
-{
-    
+@SpringBootTest(properties = {"spring.config.name=myapp-test-h2"})
+@AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class AvatarInformationIT {
+
+
     @Autowired
     private MockMvc mockMVC;
-    
+
+    @Autowired
+    private AvatarRepository avatarRepository;
+
+    @BeforeEach
+    public void setup() {
+        Avatar avatar = new Avatar();
+        avatar.setX(5);
+        avatar.setY(5);
+        avatar.setDirection("NORTH");
+        avatarRepository.save(avatar);
+    }
+
     @Test
     public void getAvatarLocationIT() throws Exception {
         this.mockMVC.perform(get("/api/board")).andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.location").value("2x2"));
-    }
-
-    @Test
-    public void getAvatarDirectionIT() throws Exception {
-        this.mockMVC.perform(get("/api/board")).andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.location").value("5x5"))
                 .andExpect(jsonPath("$.direction").value("NORTH"));
     }
-    
+
+
+    @Test
+    public void OnlyTheMostRecentAvatarInformationShouldBeReturned() throws Exception {
+        Avatar secondAvatar = new Avatar();
+        secondAvatar.setX(3);
+        secondAvatar.setY(3);
+        secondAvatar.setDirection("SOUTH");
+        avatarRepository.save(secondAvatar);
+
+        this.mockMVC.perform(get("/api/board")).andDo(print())
+                .andExpect(status().isOk());
+        
+    }
+
+
 }
