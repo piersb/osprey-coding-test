@@ -77,6 +77,11 @@ public class AvatarInformationIT {
                 .andExpect(status().isCreated());
     }
     
+    @Test
+    public void InvalidMoveShouldReturn400() throws Exception {
+        this.mockMVC.perform(post("/api/board/UP"))
+                .andExpect(status().isBadRequest());
+    }
     
 
 }

@@ -2,6 +2,7 @@ package com.ospreycodingexercise;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
@@ -10,18 +11,18 @@ import java.util.Random;
 public class AvatarController {
 
     private static final String[] directionList = new String[]{"NORTH", "SOUTH", "EAST", "WEST"};
-    
+
     @Autowired
     private AvatarRepository avatarRepository;
-    
+
     Random random = new Random();
-    
+
     @GetMapping("/api/board")
     @ResponseBody
     public Avatar getAvatarInformation() {
         return avatarRepository.findTopByOrderByIdDesc();
     }
-    
+
     @PostMapping("/api/reset")
     public String resetBoard() {
         int x = random.nextInt(10) + 1;
@@ -35,20 +36,24 @@ public class AvatarController {
     }
 
     @PostMapping("/api/board/{direction}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Avatar AcceptMove(@PathVariable String direction) {
-        
+    public ResponseEntity<Avatar> AcceptMove(@PathVariable String direction) {
+
         Avatar currentAvatar = avatarRepository.findTopByOrderByIdDesc();
-        
+
         Avatar newAvatar = new Avatar();
         newAvatar.setX(currentAvatar.getX());
         newAvatar.setY(currentAvatar.getY());
-        newAvatar.setDirection(direction);
-        avatarRepository.save(newAvatar);
+
+        try {
+            newAvatar.setDirection(direction);
+        } catch (Exception e) {
+            return new ResponseEntity<>(newAvatar, HttpStatus.BAD_REQUEST);
+        }
         
-        return newAvatar;
+        avatarRepository.save(newAvatar);
+        return new ResponseEntity<>(newAvatar, HttpStatus.CREATED);
     }
-    
+
     public void clearHistory() {
         avatarRepository.deleteAll();
     }
