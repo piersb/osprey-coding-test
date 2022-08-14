@@ -17,12 +17,23 @@ public class AvatarController {
 
     Random random = new Random();
 
+    /**
+     * This should return the current position and direction of the player on the board in the following format:
+     * {
+     *      "position": "2x2", "direction": "NORTH"
+     * }
+     * @return {"position": "XxY", "direction": "COMPASS_DIRECTION"}
+     */
     @GetMapping("/api/board")
     @ResponseBody
     public Avatar getAvatarInformation() {
         return avatarRepository.findTopByOrderByIdDesc();
     }
 
+    /**
+     * Deletes all moves and starts a new game
+     * @return String saying board is reset
+     */
     @PostMapping("/api/reset")
     public String resetBoard() {
         int x = random.nextInt(10) + 1;
@@ -35,6 +46,17 @@ public class AvatarController {
         return "Reset board!";
     }
 
+    /**
+     * This accepts a direction path parameter with an empty body and based on the direction received one of the following actions should be performed:
+     * Direction received is different from the player’s current direction: - Player direction should be changed to the new direction.
+     * Direction received is the same as the player’s current direction and the player’s position is at the end of the board (for that direction):
+     * - Do nothing
+     * Direction received is the same as the player’s current direction and the player’s position is not at the end of the board (for that direction):
+     * - Move the player forward one square in that direction
+     * On completion of the appropriate action, the new player position should be persisted to the database.
+     * @param direction major compass point
+     * @return http status and new position
+     */
     @PostMapping("/api/board/{direction}")
     public ResponseEntity<Avatar> AcceptMove(@PathVariable String direction) {
 
