@@ -35,7 +35,7 @@ public class AvatarController {
      * @return String saying board is reset
      */
     @PostMapping("/api/reset")
-    public String resetBoard() {
+    public ResponseEntity<Avatar> resetBoard() {
         int x = random.nextInt(10) + 1;
         int y = random.nextInt(10) + 1;
         int directionNumber = random.nextInt(4);
@@ -43,7 +43,7 @@ public class AvatarController {
 
         clearHistory();
         setAvatar(x, y, direction);
-        return "Reset board!";
+        return new ResponseEntity<>(avatarRepository.findTopByOrderByIdDesc(), HttpStatus.CREATED);
     }
 
     /**
