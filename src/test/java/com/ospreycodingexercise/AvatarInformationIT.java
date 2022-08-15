@@ -89,7 +89,7 @@ public class AvatarInformationIT {
     }
     
     @Test 
-    public void AttemptingToGoNorthFromStartingPointShouldMoveNorth() throws Exception {
+    public void AttemptingToGoNorthFromTestAvatarStartingPointShouldMoveNorth() throws Exception {
         this.mockMVC.perform(post("/api/board/NORTH"));
         Avatar newAvatar = avatarRepository.findTopByOrderByIdDesc();
         assertThat(newAvatar.getLocation()).isEqualTo("5x4");
