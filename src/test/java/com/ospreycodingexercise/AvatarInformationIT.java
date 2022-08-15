@@ -9,6 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -93,6 +94,13 @@ public class AvatarInformationIT {
         this.mockMVC.perform(post("/api/reset/"))
                 .andExpect(status().isOk());
     }
+    
+    @Test
+    public void ResetShouldReturnNewAvatar() throws Exception {
+        this.mockMVC.perform(post("/api/reset/"))
+                .andExpect(jsonPath("$[0]", instanceOf(Avatar.class)));
+    }
+    
     
     @Test 
     public void AttemptingToGoNorthFromTestAvatarStartingPointShouldMoveNorth() throws Exception {
