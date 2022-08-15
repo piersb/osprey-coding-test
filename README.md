@@ -1,6 +1,6 @@
 # Assumptions
 
-* The grid is numbered from 1..10 rather than 0..9
+* The grid is numbered from 1 to 10 rather than 0 to 9
 * The grid is notionally mapped with North to Up
 * The grid numbering begins in the North-west corner
 * The game is single-player only
