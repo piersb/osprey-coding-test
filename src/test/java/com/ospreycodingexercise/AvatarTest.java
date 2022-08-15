@@ -92,12 +92,7 @@ public class AvatarTest {
     @ParameterizedTest
     @MethodSource(value = "InputInTheSameDirectionMovesAvatarForward")
     public void AvatarMovesIfDirectionIsTheSame(String direction, String expectedResult) {
-
-        // ensure that we're facing in the direction we want to test a move in...
-        if (!direction.equals(testAvatar.getDirection())) {
-            testAvatar.TryToMove(direction);
-        }
-
+        testAvatar.setDirection(direction);
         testAvatar.TryToMove(direction);
         assertThat(testAvatar.getDirection()).isEqualTo(direction);
         assertThat(testAvatar.getLocation()).isEqualTo(expectedResult);
