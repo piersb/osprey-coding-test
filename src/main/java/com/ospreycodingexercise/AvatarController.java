@@ -85,7 +85,7 @@ public class AvatarController {
         Avatar avatar = new Avatar();
         avatar.setX(x);
         avatar.setY(y);
-        avatar.TryToMove(direction);
+        avatar.setDirection(direction);
         avatarRepository.save(avatar);
     }
 
